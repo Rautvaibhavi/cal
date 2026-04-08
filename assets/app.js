@@ -22,8 +22,8 @@
 
   const translations = {
     en: {
-      brand: 'Smart Property Flow',
-      badge: 'Step-by-step Calculator',
+      brand: 'PAVITRA HAPPINESS',
+      badge: 'REAL ESTATE Calculator',
       intro_title: 'Follow the flow, pick a project, and get your report.',
       intro_subtitle: 'Start with language, choose residential or industrial, then finish with the project or calculator.',
       step1_title: 'Language Selection',

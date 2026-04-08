@@ -13,7 +13,7 @@
       report_back: 'Back',
       report_title: 'Investment Report',
       report_subtitle: 'Generated from your latest inputs.',
-      report_chart_title: 'Performance Graph',
+      report_chart_title: 'Comparison View',
       report_type_ind: 'Industrial',
       report_type_res: 'Residential',
       summary_title: 'Summary',
@@ -29,14 +29,11 @@
       summary_price_range: 'Price Range',
       summary_timeline: 'Timeline',
       summary_config: 'Configuration',
-      chart_future: 'Future Value',
-      chart_rent: 'Total Rent',
-      chart_total: 'Total Return',
-      chart_roi: 'ROI',
-      chart_price_low: 'Price Low',
-      chart_price_high: 'Price High',
-      chart_time_min: 'Timeline Min',
-      chart_time_max: 'Timeline Max',
+      chart_down_return: 'Invested vs Returned',
+      chart_rent_future: 'Rent vs Future Value',
+      chart_roi: 'ROI (%)',
+      chart_profit: 'Net Profit',
+      roi_meaning: 'ROI (Return on Investment) shows how much gain you made compared to your total investment.',
       project_poem: 'Poem',
       project_velvet: 'Velvet Valley',
       project_violet: 'Violet',
@@ -46,7 +43,7 @@
       report_back: 'वापस',
       report_title: 'निवेश रिपोर्ट',
       report_subtitle: 'आपके नवीनतम इनपुट से तैयार।',
-      report_chart_title: 'परफॉर्मेंस ग्राफ',
+      report_chart_title: 'तुलना दृश्य',
       report_type_ind: 'इंडस्ट्रियल',
       report_type_res: 'रेजिडेंशियल',
       summary_title: 'सारांश',
@@ -62,14 +59,11 @@
       summary_price_range: 'प्राइस रेंज',
       summary_timeline: 'टाइमलाइन',
       summary_config: 'कॉन्फ़िगरेशन',
-      chart_future: 'भविष्य मूल्य',
-      chart_rent: 'कुल किराया',
-      chart_total: 'कुल रिटर्न',
-      chart_roi: 'ROI',
-      chart_price_low: 'न्यूनतम मूल्य',
-      chart_price_high: 'अधिकतम मूल्य',
-      chart_time_min: 'न्यूनतम अवधि',
-      chart_time_max: 'अधिकतम अवधि',
+      chart_down_return: 'निवेश बनाम रिटर्न',
+      chart_rent_future: 'किराया बनाम भविष्य मूल्य',
+      chart_roi: 'ROI (%)',
+      chart_profit: 'शुद्ध लाभ',
+      roi_meaning: 'ROI (रिटर्न ऑन इन्वेस्टमेंट) बताता है कि कुल निवेश की तुलना में आपको कितना लाभ हुआ।',
       project_poem: 'पोएम',
       project_velvet: 'वेल्वेट वैली',
       project_violet: 'वायलेट',
@@ -79,7 +73,7 @@
       report_back: 'પાછા',
       report_title: 'નિવેશ રિપોર્ટ',
       report_subtitle: 'તમારા નવા ઇનપુટ પરથી બનાવ્યું.',
-      report_chart_title: 'પરફોર્મન્સ ગ્રાફ',
+      report_chart_title: 'તુલના દૃશ્ય',
       report_type_ind: 'ઔદ્યોગિક',
       report_type_res: 'રહેણાંક',
       summary_title: 'સારાંશ',
@@ -95,14 +89,11 @@
       summary_price_range: 'કિંમત રેન્જ',
       summary_timeline: 'ટાઇમલાઇન',
       summary_config: 'કોન્ફિગ્યુરેશન',
-      chart_future: 'ભવિષ્ય મૂલ્ય',
-      chart_rent: 'કુલ ભાડું',
-      chart_total: 'કુલ રિટર્ન',
-      chart_roi: 'ROI',
-      chart_price_low: 'નીચું મૂલ્ય',
-      chart_price_high: 'ઉચ્ચ મૂલ્ય',
-      chart_time_min: 'ન્યૂનતમ સમય',
-      chart_time_max: 'મહત્તમ સમય',
+      chart_down_return: 'રોકાણ સામે રિટર્ન',
+      chart_rent_future: 'ભાડું સામે ભવિષ્ય મૂલ્ય',
+      chart_roi: 'ROI (%)',
+      chart_profit: 'ચોખ્ખો નફો',
+      roi_meaning: 'ROI (રિટર્ન ઑન ઈન્વેસ્ટમેન્ટ) બતાવે છે કે કુલ રોકાણ સામે તમને કેટલો લાભ થયો.',
       project_poem: 'પોયમ',
       project_velvet: 'વેલ્વેટ વેલી',
       project_violet: 'વાયલેટ',
@@ -134,13 +125,26 @@
       const height = Math.max(8, Math.round((item.scale / maxValue) * 100));
       const bar = document.createElement('div');
       bar.className = 'chart-bar';
-      bar.innerHTML = `\n        <div class="chart-bar-fill" style="height: ${height}%;"></div>\n        <div class="chart-bar-value">${item.display}</div>\n        <div class="chart-bar-label">${item.label}</div>\n      `;
+      bar.style.setProperty('--bar-height', `${height}%`);
+      bar.innerHTML = `
+        <div class="chart-bar-fill"></div>
+        <div class="chart-bar-value">${item.display}</div>
+        <div class="chart-bar-label">${item.label}</div>
+      `;
       chartBars.appendChild(bar);
 
       const legend = document.createElement('div');
       legend.textContent = item.label;
       chartLegend.appendChild(legend);
     });
+  };
+
+  const renderRoiNote = () => {
+    if (!summary) return;
+    const note = document.createElement('div');
+    note.className = 'roi-note';
+    note.textContent = map.roi_meaning;
+    summary.appendChild(note);
   };
 
   if (type === 'industrial') {
@@ -152,6 +156,7 @@
     const total_rent = parseFloat(params.get('total_rent') || '0');
     const total_return = parseFloat(params.get('total_return') || '0');
     const roi_percent = parseFloat(params.get('roi_percent') || '0');
+    const net_profit = total_return - down_payment;
 
     if (chip) chip.textContent = map.report_type_ind;
 
@@ -171,12 +176,14 @@
       `;
     }
 
-    const roiScaled = (roi_percent / 100) * Math.max(future_value, total_rent, total_return, 1);
+    renderRoiNote();
+
+    const roiScaled = (roi_percent / 100) * Math.max(down_payment, total_return, total_rent, future_value, 1);
     renderBars([
-      { label: map.chart_future, display: formatINR(future_value), scale: future_value },
-      { label: map.chart_rent, display: formatINR(total_rent), scale: total_rent },
-      { label: map.chart_total, display: formatINR(total_return), scale: total_return },
+      { label: map.chart_down_return, display: `${formatINR(down_payment)} → ${formatINR(total_return)}`, scale: total_return },
+      { label: map.chart_rent_future, display: `${formatINR(total_rent)} → ${formatINR(future_value)}`, scale: Math.max(total_rent, future_value) },
       { label: map.chart_roi, display: `${roi_percent.toFixed(1)}%`, scale: roiScaled },
+      { label: map.chart_profit, display: formatINR(net_profit), scale: Math.max(net_profit, 1) },
     ]);
   } else {
     const project = params.get('project') || 'poem';
@@ -202,10 +209,12 @@
     }
 
     renderBars([
-      { label: map.chart_price_low, display: formatINR(price_low), scale: price_low },
-      { label: map.chart_price_high, display: formatINR(price_high), scale: price_high },
-      { label: map.chart_time_min, display: `${timeline_min} yrs`, scale: timeline_min },
-      { label: map.chart_time_max, display: `${timeline_max} yrs`, scale: timeline_max },
+      { label: map.chart_down_return, display: `${formatINR(price_low)} → ${formatINR(price_high)}`, scale: price_high },
+      { label: map.chart_rent_future, display: `${timeline_min} → ${timeline_max} yrs`, scale: Math.max(timeline_min, timeline_max) },
+      { label: map.chart_roi, display: map.report_type_res, scale: Math.max(price_high, 1) },
+      { label: map.chart_profit, display: map.summary_config, scale: Math.max(price_high - price_low, 1) },
     ]);
   }
 })();
+
+

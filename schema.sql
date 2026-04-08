@@ -1,6 +1,3 @@
-﻿CREATE DATABASE IF NOT EXISTS real_estate;
-USE real_estate;
-
 CREATE TABLE IF NOT EXISTS real_estate_calculations (
     id INT AUTO_INCREMENT PRIMARY KEY,
     property_price DECIMAL(15,2) NOT NULL,
@@ -18,7 +15,7 @@ CREATE TABLE IF NOT EXISTS real_estate_calculations (
 );
 
 
-CREATE TABLE IF NOT EXISTS industrial_calculations (
+CREATE TABLE IF NOT EXISTS industrial_calculations (s
     id INT AUTO_INCREMENT PRIMARY KEY,
     down_payment DECIMAL(15,2) NOT NULL,
     interest_rate DECIMAL(6,3) NOT NULL,
@@ -30,4 +27,5 @@ CREATE TABLE IF NOT EXISTS industrial_calculations (
     roi_percent DECIMAL(8,3) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
